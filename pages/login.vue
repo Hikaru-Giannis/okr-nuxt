@@ -22,7 +22,7 @@
       ></v-text-field>
       <v-btn
         class="mr-4 mt-4"
-        @click="submit"
+        @click="login"
       >
         ログイン
       </v-btn>
@@ -66,12 +66,24 @@ export default {
   },
 
   methods: {
-    submit () {
+    async login () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         return false
       }
+
+      const loginParams = {
+        email: this.email,
+        password: this.password
+      }
+      await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
+        .then((res) => {
+          const response = this.$axios.$post(this.$config.API_BASE_URL + '/login', loginParams, { withCredentials: true })
+          console.log(response)
+        })
+
     }
-  },
+  }
+
 }
 </script>
