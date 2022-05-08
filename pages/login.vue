@@ -1,0 +1,91 @@
+<template>
+  <div>
+    <h2>ログイン画面</h2>
+    <form>
+      <v-text-field
+        v-model="name"
+        :error-messages="nameErrors"
+        :counter="10"
+        label="ユーザー名"
+        required
+        @blur="$v.name.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-model="email"
+        :error-messages="emailErrors"
+        label="メールアドレス"
+        required
+        @blur="$v.email.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-model="password"
+        :error-messages="passwordErrors"
+        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="show ? 'text' : 'password'"
+        label="パスワード"
+        required
+        counter
+        @click:append="show = !show"
+        @blur="$v.password.$touch()"
+      ></v-text-field>
+      <v-btn
+        class="mr-4 mt-4"
+        @click="submit"
+      >
+        新規登録
+      </v-btn>
+    </form>
+  </div>
+</template>
+
+<script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
+export default {
+  mixins: [validationMixin],
+
+  validations: {
+    name: { required, maxLength: maxLength(10) },
+    email: { required, email },
+    password: { required, minLength: minLength(8), maxLength: maxLength(20)}
+  },
+
+  data: () => ({
+    name: '',
+    email: '',
+    password: '',
+    show: false,
+  }),
+
+  computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.maxLength && errors.push('ユーザー名は最大10文字以内で入力してください。')
+      !this.$v.name.required && errors.push('ユーザー名は入力必須です.')
+      return errors
+    },
+    emailErrors () {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.email && errors.push('無効なメールアドレスです。')
+      !this.$v.email.required && errors.push('メールアドレスは入力必須です。')
+      return errors
+    },
+    passwordErrors () {
+      const errors = []
+      if (!this.$v.password.$dirty) return errors
+      !this.$v.password.maxLength && errors.push('ユーザー名は最大20文字以内で入力してください。')
+      !this.$v.password.maxLength && errors.push('ユーザー名は最低8文字以内で入力してください。')
+      !this.$v.password.required && errors.push('パスワードは入力必須です。')
+      return errors
+    }
+  },
+
+  methods: {
+    submit () {
+      this.$v.$touch()
+    }
+  },
+}
+</script>
