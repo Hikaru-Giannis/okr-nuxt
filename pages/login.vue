@@ -3,14 +3,6 @@
     <h2>ログイン画面</h2>
     <form>
       <v-text-field
-        v-model="name"
-        :error-messages="nameErrors"
-        :counter="10"
-        label="ユーザー名"
-        required
-        @blur="$v.name.$touch()"
-      ></v-text-field>
-      <v-text-field
         v-model="email"
         :error-messages="emailErrors"
         label="メールアドレス"
@@ -32,7 +24,7 @@
         class="mr-4 mt-4"
         @click="submit"
       >
-        新規登録
+        ログイン
       </v-btn>
     </form>
   </div>
@@ -45,26 +37,17 @@ export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
     email: { required, email },
     password: { required, minLength: minLength(8), maxLength: maxLength(20)}
   },
 
   data: () => ({
-    name: '',
     email: '',
     password: '',
-    show: false,
+    show: false
   }),
 
   computed: {
-    nameErrors () {
-      const errors = []
-      if (!this.$v.name.$dirty) return errors
-      !this.$v.name.maxLength && errors.push('ユーザー名は最大10文字以内で入力してください。')
-      !this.$v.name.required && errors.push('ユーザー名は入力必須です.')
-      return errors
-    },
     emailErrors () {
       const errors = []
       if (!this.$v.email.$dirty) return errors
@@ -85,6 +68,9 @@ export default {
   methods: {
     submit () {
       this.$v.$touch()
+      if (this.$v.$invalid) {
+        return false
+      }
     }
   },
 }
