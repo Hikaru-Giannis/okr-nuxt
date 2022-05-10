@@ -1,5 +1,10 @@
 <template>
   <div>
+    <SnackBar
+      v-show="isError"
+      :color="'red'"
+      :message="errorMessage"
+    />
     <h2>ログイン画面</h2>
     <form>
       <v-text-field
@@ -33,7 +38,13 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
+import SnackBar from '@/components/common/SnackBar'
+
 export default {
+  name: 'Login',
+  components: {
+    SnackBar
+  },
   mixins: [validationMixin],
 
   validations: {
@@ -44,7 +55,9 @@ export default {
   data: () => ({
     email: '',
     password: '',
-    show: false
+    show: false,
+    isError: false,
+    errorMessage: ''
   }),
 
   computed: {
@@ -76,9 +89,28 @@ export default {
         email: this.email,
         password: this.password
       }
-      await this.$auth.loginWith('laravelSanctum', {
+      const response = await this.$auth.loginWith('laravelSanctum', {
         data: loginParams
+      }).catch(err => {
+        return err.response
       })
+
+      if (response.status === 401) {
+        await this.clearPassword()
+        this.isError = true
+        this.errorMessage = 'ログインに失敗しました。'
+      } else if (response.status !== 200) {
+        await this.clearEmail()
+        await this.clearPassword()
+        this.isError = true
+        this.errorMessage = '画面を更新してください。'
+      }
+    },
+    clearPassword () {
+      this.password = ""
+    },
+    clearEmail () {
+      this.email = ""
     }
   }
 
