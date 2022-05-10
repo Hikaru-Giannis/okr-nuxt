@@ -76,12 +76,9 @@ export default {
         email: this.email,
         password: this.password
       }
-      await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
-        .then((res) => {
-          const response = this.$axios.$post(this.$config.API_BASE_URL + '/login', loginParams, { withCredentials: true })
-          console.log(response)
-        })
-
+      await this.$auth.loginWith('laravelSanctum', {
+        data: loginParams
+      })
     }
   }
 
