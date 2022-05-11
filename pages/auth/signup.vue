@@ -43,7 +43,7 @@
     <v-btn
       class="mt-2"
       color="success"
-      to="login"
+      to="/auth/login"
     >
     ログイン
     </v-btn>
@@ -114,10 +114,15 @@ export default {
         email: this.email,
         password: this.password
       }
-      const signupResponse = await this.$axios.$post(this.$config.API_BASE_URL + '/api/user', signupParams, { withCredentials: true })
-      .catch(err => {
-        return err.response
-      })
+
+      let signupResponse = null;
+      await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
+        .then(async (res) => {
+          signupResponse = await this.$axios.$post(this.$config.API_BASE_URL + '/api/user', signupParams, { withCredentials: true })
+          .catch(err => {
+            return err.response
+          })
+        })
 
       if (signupResponse.status !== 200) {
         await this.clearEmail()

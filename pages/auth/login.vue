@@ -35,7 +35,7 @@
     <v-btn
       class="mt-2"
       color="success"
-      to="signup"
+      to="/auth/signup"
     >
     新規登録
     </v-btn>
