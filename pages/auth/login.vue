@@ -112,6 +112,8 @@ export default {
         this.isError = true
         this.errorMessage = '画面を更新してください。'
       }
+
+      return this.$router.push('/')
     },
     clearPassword () {
       this.password = ""
