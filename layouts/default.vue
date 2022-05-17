@@ -36,6 +36,7 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-if="$auth.loggedIn" @click="logout" v-text="'ログアウト'"/>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
@@ -88,5 +89,11 @@ export default {
       title: 'Vuetify.js',
     }
   },
+  methods: {
+    async logout() {
+      await this.$auth.logout()
+      return this.$router.push('/auth/login')
+    }
+  }
 }
 </script>
