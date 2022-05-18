@@ -119,9 +119,9 @@ export default {
       await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
         .then(async (res) => {
           signupResponse = await this.$axios.$post(this.$config.API_BASE_URL + '/api/user', signupParams, { withCredentials: true })
-          .catch(err => {
-            return err.response
-          })
+        })
+        .catch(err => {
+          return err.response
         })
 
       if (signupResponse.status !== 200) {
