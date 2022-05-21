@@ -238,12 +238,11 @@ export default {
   validations: {
     target: { required }
   },
-
   data () {
     return {
       e1: 1,
       target: null,
-      expirationDate: null,
+      expirationDate: this.$dateFns.format(new Date(), 'yyyy-MM-dd'),
       indicators: [],
       indicatorForms: [''],
       indicatorErrorMessage: ''
