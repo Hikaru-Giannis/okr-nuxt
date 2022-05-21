@@ -69,7 +69,7 @@
 
         <v-btn
           color="primary"
-          :disabled="$v.$invalid"
+          :disabled="$v.target.$invalid"
           @click="e1 = 2"
         >
           次へ
@@ -115,7 +115,7 @@
         >
         <v-card-title>成果目標を設定しよう！</v-card-title>
           <div
-            v-for="(form, index) in indicatorForms"
+            v-for="(form, index) in indicators"
             :key="index"
             class="ml-4 target--field d-flex"
           >
@@ -126,6 +126,7 @@
               placeholder="1ヶ月以内にカジュアル面談を３社受ける"
             ></v-text-field>
             <v-btn
+              v-if="1 < indicators.length"
               fab
               dark
               small
@@ -139,7 +140,7 @@
             </v-btn>
           </div>
           <v-btn
-            v-if="indicatorForms.length < 5"
+            v-if="indicators.length < 5"
             class="mx-5 mb-5"
             fab
             dark
@@ -153,7 +154,7 @@
             </v-icon>
           </v-btn>
           <v-alert
-            v-if="5 <= indicatorForms.length"
+            v-if="5 <= indicators.length"
             class="mx-2 indicator--alert"
             color="red lighten-2"
             dark
@@ -179,6 +180,7 @@
         </v-btn>
         <v-btn
           color="primary"
+          :disabled="indicators[0] === ''"
           @click="e1 = 4"
         >
           次へ
@@ -243,13 +245,12 @@ export default {
       e1: 1,
       target: null,
       expirationDate: this.$dateFns.format(new Date(), 'yyyy-MM-dd'),
-      indicators: [],
-      indicatorForms: [''],
+      indicators: [''],
       indicatorErrorMessage: ''
     }
   },
   computed: {
-    targetErrors () {
+    targetErrors() {
       const errors = []
       if (!this.$v.target.$dirty) return errors
       !this.$v.target.required && errors.push('目標は入力必須です。')
@@ -258,16 +259,10 @@ export default {
   },
   methods: {
     addIndicatorForm() {
-      this.indicatorForms.push('')
+      this.indicators.push('')
     },
     deleteIndicatorForm(index) {
-      this.indicatorForms.splice(index, 1)
-    },
-    toStep2() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return false
-      }
+      this.indicators.splice(index, 1)
     }
   }
 }
