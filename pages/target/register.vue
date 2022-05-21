@@ -45,9 +45,11 @@
               <div class="ml-4 target--field">
                 <v-text-field
                   v-model="target"
+                  :error-messages="targetErrors"
                   lavel="目標"
                   required
                   placeholder="キャリアアップのために転職する"
+                  @blur="$v.target.$touch()"
                 ></v-text-field>
               </div>
             <v-card-subtitle>目標を設定する際のヒント</v-card-subtitle>
@@ -67,6 +69,7 @@
 
         <v-btn
           color="primary"
+          :disabled="$v.$invalid"
           @click="e1 = 2"
         >
           次へ
@@ -226,7 +229,16 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
+
+  validations: {
+    target: { required }
+  },
+
   data () {
     return {
       e1: 1,
@@ -237,6 +249,14 @@ export default {
       indicatorErrorMessage: ''
     }
   },
+  computed: {
+    targetErrors () {
+      const errors = []
+      if (!this.$v.target.$dirty) return errors
+      !this.$v.target.required && errors.push('目標は入力必須です。')
+      return errors
+    }
+  },
   methods: {
     addIndicatorForm() {
       this.indicatorForms.push('')
@@ -244,8 +264,11 @@ export default {
     deleteIndicatorForm(index) {
       this.indicatorForms.splice(index, 1)
     },
-    updateTarget() {
-
+    toStep2() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return false
+      }
     }
   }
 }
