@@ -221,6 +221,7 @@
         </v-btn>
         <v-btn
           color="primary"
+          @click="registerTarget"
         >
           設定完了
         </v-btn>
@@ -263,6 +264,25 @@ export default {
     },
     deleteIndicatorForm(index) {
       this.indicators.splice(index, 1)
+    },
+    async registerTarget() {
+      let response = null
+      await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
+        .then(async (res) => {
+          response = await this.$axios.$post(
+            this.$config.API_BASE_URL + '/api/target',
+            { target: {} },
+            {
+              withCredentials: true
+            }
+          )
+        })
+        .catch(err => {
+          return err.response
+        })
+
+      console.log(response)
+
     }
   }
 }
