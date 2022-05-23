@@ -266,12 +266,17 @@ export default {
       this.indicators.splice(index, 1)
     },
     async registerTarget() {
-      let response = null
       await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
         .then(async (res) => {
-          response = await this.$axios.$post(
+          await this.$axios.$post(
             this.$config.API_BASE_URL + '/api/target',
-            { target: {} },
+            {
+              target: {
+                contents: this.target,
+                expiration_date: this.expirationDate,
+              },
+              indicators: this.indicators
+            },
             {
               withCredentials: true
             }
@@ -281,8 +286,8 @@ export default {
           return err.response
         })
 
-      console.log(response)
-
+      // TODO エラー処理要検討
+      return this.$router.push('/')
     }
   }
 }
