@@ -29,6 +29,18 @@
           </v-list-item-content>
         </v-list-item>
       </v-card>
+      <v-btn
+        class="mx-5 my-5"
+        dark
+        tile
+        color="success"
+        to="/target/register"
+      >
+        <v-icon left>
+          mdi-plus
+        </v-icon>
+        新規登録
+      </v-btn>
     </div>
     <div
       v-else
