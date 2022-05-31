@@ -17,6 +17,12 @@
             {{ target.contents }}
             </v-list-item-title>
             <div class="text-subtitle-1 mb-2">
+              期限日 : {{ $dateFns.format(new Date(target.expiration_date), 'yyyy-MM-dd') }}まで
+            </div>
+            <div class="text-subtitle-1 mb-2">
+              ステータス : {{ target.status }}
+            </div>
+            <div class="text-subtitle-1 mb-2">
               成果目標
             </div>
             <ul
@@ -28,6 +34,18 @@
             </ul>
           </v-list-item-content>
         </v-list-item>
+        <v-btn
+          class="mx-5 mb-5"
+          dark
+          tile
+          color="success"
+          :to="{ name: 'target-evaluate-id', params: { id: target.id }}"
+        >
+          <v-icon left>
+            mdi-chevron-right
+          </v-icon>
+          評価する
+        </v-btn>
       </v-card>
       <v-btn
         class="mx-5 my-5"
