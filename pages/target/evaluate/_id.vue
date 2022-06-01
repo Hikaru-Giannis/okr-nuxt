@@ -31,7 +31,7 @@
           </td>
           <td>
             <v-slider
-              v-model="scores[index]"
+              v-model="target.indicators[index].score"
               class="align-center"
               :max="max"
               :min="min"
@@ -41,7 +41,7 @@
             >
               <template #append>
                 <v-text-field
-                  v-model="scores[index]"
+                  v-model="target.indicators[index].score"
                   class="mt-0 pt-0"
                   hide-details
                   single-line
@@ -81,24 +81,49 @@
         return err.response
       })
 
+      const target = response.data.target
+
       return {
-        target: response.data.target
+        target
       }
     },
     data() {
       return {
         min: 0,
         max: 1,
-        step: 0.1,
-        scores: [
-          0.0,
-          0.0
-        ]
+        step: 0.1
       }
     },
     methods: {
-      scoreIndicators() {
-        console.log(this.scores)
+      async scoreIndicators() {
+        const indicators = this.target.indicators
+        const indicatorsForm = []
+        for (const indicator of indicators) {
+          indicatorsForm.push({
+            indicator_id: indicator.id,
+            score: indicator.score
+          })
+        }
+
+        await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
+        .then(async (res) => {
+          await this.$axios.$post(
+            this.$config.API_BASE_URL + '/api/target/score',
+            {
+              target_id: this.target.id,
+              indicators: indicatorsForm
+            },
+            {
+              withCredentials: true
+            }
+          )
+        })
+        .catch(err => {
+          return err.response
+        })
+
+        // TODO エラー処理要検討
+        return this.$router.push('/')
       }
     }
   }
