@@ -11,16 +11,26 @@
       >
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title
-              class="mt-3 mb-3 text-h5"
+            <div
+              class="d-flex justify-start"
             >
-            {{ target.contents }}
-            </v-list-item-title>
+              <div>
+                <v-list-item-title
+                  class="my-3 text-h5"
+                >
+                {{ target.contents }}
+                </v-list-item-title>
+              </div>
+              <v-chip
+                class="ma-2"
+                color="primary"
+              >
+                {{ target.status }}
+              </v-chip>
+            </div>
+
             <div class="text-subtitle-1 mb-2">
               期限日 : {{ $dateFns.format(new Date(target.expiration_date), 'yyyy-MM-dd') }}まで
-            </div>
-            <div class="text-subtitle-1 mb-2">
-              ステータス : {{ target.status }}
             </div>
             <div class="text-subtitle-1 mb-2">
               成果目標
