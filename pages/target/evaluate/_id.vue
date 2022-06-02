@@ -1,67 +1,77 @@
 <template>
   <div>
-    <h2 class="text-title font-weight-bold ml-3">
-      {{ target.contents }}
-    </h2>
-    <v-simple-table>
-    <template
-      #default
-    >
-      <thead>
-        <tr>
-          <th
-            class="text-subtitle-1 font-weight-bold text-left"
-          >
-            成果目標
-          </th>
-          <th
-            class="text-subtitle-1 font-weight-bold text-left"
-          >
-            スコア
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(indicator, index) in target.indicators"
-          :key="indicator.id"
+    <v-card>
+      <v-card-title class="font-weight-bold ml-3 mt-3">
+        {{ target.contents }}
+      </v-card-title>
+      <p
+        class="d-flex justify-center text-h2 mx-5 green--text font-weight-medium"
+      >
+        {{ totalScore }}
+      </p>
+      <v-simple-table
+        class="mx-5"
+      >
+        <template
+          #default
         >
-          <td>
-            {{ indicator.contents }}
-          </td>
-          <td>
-            <v-slider
-              v-model="target.indicators[index].score"
-              class="align-center"
-              :max="max"
-              :min="min"
-              step="0.1"
-              ticks="always"
-              hide-details
+          <thead>
+            <tr>
+              <th
+                class="text-subtitle-1 font-weight-bold text-left"
+              >
+                成果目標
+              </th>
+              <th
+                class="text-subtitle-1 font-weight-bold text-left"
+              >
+                スコア
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(indicator, index) in target.indicators"
+              :key="indicator.id"
             >
-              <template #append>
-                <v-text-field
+              <td>
+                {{ indicator.contents }}
+              </td>
+              <td>
+                <v-slider
                   v-model="target.indicators[index].score"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  type="number"
+                  class="align-center"
+                  :max="max"
+                  :min="min"
                   step="0.1"
-                  style="width: 60px"
-                ></v-text-field>
-              </template>
-          </v-slider>
-          </td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
-  <v-btn
-    color="primary"
-    @click="scoreIndicators"
-  >
-  保存
-  </v-btn>
+                  ticks="always"
+                  hide-details
+                >
+                  <template #append>
+                    <v-text-field
+                      v-model="target.indicators[index].score"
+                      class="mt-0 pt-0"
+                      hide-details
+                      single-line
+                      type="number"
+                      step="0.1"
+                      style="width: 60px"
+                    ></v-text-field>
+                  </template>
+              </v-slider>
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      <v-btn
+        class="mx-5 my-5"
+        color="primary"
+        @click="scoreIndicators"
+      >
+      保存
+      </v-btn>
+    </v-card>
   </div>
 </template>
 
@@ -92,6 +102,14 @@
         min: 0,
         max: 1,
         step: 0.1
+      }
+    },
+    computed: {
+      totalScore() {
+        const totalScore = this.target.indicators.reduce(function (accumlator, current) {
+          return accumlator + Number(current.score)
+        }, 0)
+        return totalScore.toFixed(2)
       }
     },
     methods: {
