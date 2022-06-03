@@ -69,7 +69,7 @@
         color="primary"
         @click="scoreIndicators"
       >
-      保存
+      OCRを続ける
       </v-btn>
     </v-card>
   </div>
