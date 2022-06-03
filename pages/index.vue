@@ -29,6 +29,12 @@
               </v-chip>
             </div>
 
+            <p
+              class="d-flex justify-center text-h2 mx-5 green--text font-weight-medium"
+            >
+              {{ target.total_score.toFixed(2) }}
+            </p>
+
             <div class="text-subtitle-1 mb-2">
               期限日 : {{ $dateFns.format(new Date(target.expiration_date), 'yyyy-MM-dd') }}まで
             </div>
