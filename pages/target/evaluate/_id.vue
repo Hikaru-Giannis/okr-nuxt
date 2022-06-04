@@ -71,6 +71,12 @@
       >
       OCRを続ける
       </v-btn>
+      <v-btn
+        class="mx-5 my-5 orange darken-3 white--text"
+        @click="completeEvaluate"
+      >
+      OCRを終了する
+      </v-btn>
     </v-card>
   </div>
 </template>
@@ -124,21 +130,51 @@
         }
 
         await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
-        .then(async (res) => {
-          await this.$axios.$post(
-            this.$config.API_BASE_URL + '/api/target/score',
-            {
-              target_id: this.target.id,
-              indicators: indicatorsForm
-            },
-            {
-              withCredentials: true
-            }
-          )
-        })
-        .catch(err => {
-          return err.response
-        })
+          .then(async (res) => {
+            await this.$axios.$post(
+              this.$config.API_BASE_URL + '/api/target/score',
+              {
+                target_id: this.target.id,
+                indicators: indicatorsForm
+              },
+              {
+                withCredentials: true
+              }
+            )
+          })
+          .catch(err => {
+            return err.response
+          })
+
+        // TODO エラー処理要検討
+        return this.$router.push('/')
+      },
+      async completeEvaluate() {
+        const indicators = this.target.indicators
+        const indicatorsForm = []
+        for (const indicator of indicators) {
+          indicatorsForm.push({
+            indicator_id: indicator.id,
+            score: indicator.score
+          })
+        }
+
+        await this.$axios.$get(this.$config.API_BASE_URL + '/sanctum/csrf-cookie', { withCredentials: true })
+          .then(async (res) => {
+                await this.$axios.$post(
+                  this.$config.API_BASE_URL + '/api/target/complete',
+                  {
+                    target_id: this.target.id,
+                    indicators: indicatorsForm
+                  },
+                  {
+                    withCredentials: true
+                  }
+                )
+              })
+          .catch(err => {
+            return err.response
+          })
 
         // TODO エラー処理要検討
         return this.$router.push('/')
