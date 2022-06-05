@@ -23,9 +23,9 @@
               </div>
               <v-chip
                 class="ma-2"
-                color="primary"
+                :color="getTargetStatusColor(target.status)"
               >
-                {{ target.status }}
+                {{ getTargetStatusText(target.status) }}
               </v-chip>
             </div>
 
@@ -51,6 +51,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-btn
+          v-if="isImplementing(target.status)"
           class="mx-5 mb-5"
           dark
           tile
@@ -105,6 +106,33 @@ export default {
 
     const targetList = response.data.targets
     return { targetList }
+  },
+  data () {
+    return {
+      targetStatusColor: ''
+    }
+  },
+  methods: {
+    isCompleted(status) {
+      return status === this.$config.STATUS_COMPLETION
+    },
+    isImplementing(status) {
+      return status === this.$config.STATUS_IMPLEMENTATION
+    },
+    getTargetStatusColor(status) {
+      if (this.isCompleted(status)) {
+        return 'success'
+      }
+
+      return 'primary'
+    },
+    getTargetStatusText(status) {
+      if (this.isCompleted(status)) {
+        return '完了'
+      }
+
+      return '実行中'
+    },
   }
 }
 </script>

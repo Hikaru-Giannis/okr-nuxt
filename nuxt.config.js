@@ -77,7 +77,11 @@ export default {
   build: {},
 
   publicRuntimeConfig: {
-    API_BASE_URL: process.env.API_BASE_URL
+    API_BASE_URL: process.env.API_BASE_URL,
+
+    // 目標ステータス定数
+    STATUS_IMPLEMENTATION: 10,
+    STATUS_COMPLETION: 20
   },
   auth: {
     strategies: {
