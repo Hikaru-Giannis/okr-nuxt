@@ -51,7 +51,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-btn
-          v-if="isImplementing(target.status)"
+          :disabled="!isImplementing(target.status)"
           class="mx-5 mb-5"
           dark
           tile
