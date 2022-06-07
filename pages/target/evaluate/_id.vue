@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import SnackBar from '@/components/common/SnackBar'
+import SnackBar from '@/components/elements/SnackBar'
 
 export default {
   name: 'EvaluatePage',

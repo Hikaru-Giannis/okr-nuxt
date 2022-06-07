@@ -53,7 +53,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
-import SnackBar from '@/components/common/SnackBar'
+import SnackBar from '@/components/elements/SnackBar'
 
 export default {
   name: 'SignUp',
