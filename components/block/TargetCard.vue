@@ -48,26 +48,21 @@
           </ul>
         </v-list-item-content>
       </v-list-item>
-      <v-btn
-        v-if="isImplementing(target.status)"
-        class="mx-5 mb-5"
-        dark
-        tile
-        color="success"
-        :to="{ name: 'target-evaluate-id', params: { id: target.id }}"
-      >
-        <v-icon left>
-          mdi-chevron-right
-        </v-icon>
-        評価する
-      </v-btn>
+      <EvaluateButtonVue
+        :id="target.id"
+        :status="target.status"
+      />
     </v-card>
   </div>
 </template>
 
 <script>
+import EvaluateButtonVue from '@/components/elements/EvaluateButton'
 export default {
   name: 'TargetCardComponent',
+  components: {
+    EvaluateButtonVue
+  },
   props: {
     targetList: {
       type: Array,
