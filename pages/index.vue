@@ -99,9 +99,11 @@ export default {
         return err.response
       })
 
-    // TODO エラー処理要検討
-    if (response.data.status !== 200) {
-      return error(401);
+    if (typeof response.data === 'undefined' || response.data.status !== 200) {
+      error({
+        stausCode: response.status
+      })
+      return
     }
 
     const targetList = response.data.targets
