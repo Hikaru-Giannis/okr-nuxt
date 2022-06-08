@@ -6,18 +6,7 @@
       <TargetCardVue
         :target-list="targetList"
       />
-      <v-btn
-        class="mx-5 my-5"
-        dark
-        tile
-        color="success"
-        to="/target/register"
-      >
-        <v-icon left>
-          mdi-plus
-        </v-icon>
-        新規登録
-      </v-btn>
+      <NewTargetRegisterButton />
     </div>
     <div
       v-else
@@ -34,11 +23,13 @@
 
 <script>
 import TargetCardVue from '@/components/block/TargetCard'
+import NewTargetRegisterButton from '@/components/elements/NewTargetRegisterButton'
 
 export default {
   name: 'IndexPage',
   components: {
-    TargetCardVue
+    TargetCardVue,
+    NewTargetRegisterButton
   },
   async asyncData({ $axios, $config, error }) {
     const response = await $axios.$get($config.API_BASE_URL + '/api/target/index', { withCredentials: true })
