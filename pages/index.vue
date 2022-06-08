@@ -1,35 +1,15 @@
 <template>
-  <div>
-    <div
-      v-if="targetList.length > 0"
-    >
-      <TargetCardVue
-        :target-list="targetList"
-      />
-      <NewTargetRegisterButton />
-    </div>
-    <div
-      v-else
-    >
-      <v-card
-        elevation="2"
-        class="mb-3"
-      >
-      <v-card-text>目標が登録されておりません。目標を登録しましょう！！</v-card-text>
-      </v-card>
-    </div>
-  </div>
+  <Index
+    :target-list="targetList"
+  />
 </template>
 
 <script>
-import TargetCardVue from '@/components/block/TargetCard'
-import NewTargetRegisterButton from '@/components/elements/NewTargetRegisterButton'
+import Index from '@/components/pages/Index'
 
 export default {
-  name: 'IndexPage',
   components: {
-    TargetCardVue,
-    NewTargetRegisterButton
+    Index
   },
   async asyncData({ $axios, $config, error }) {
     const response = await $axios.$get($config.API_BASE_URL + '/api/target/index', { withCredentials: true })
