@@ -76,23 +76,22 @@
       >
       OCRを続ける
       </v-btn>
-      <v-btn
-        class="mx-5 my-5 orange darken-3 white--text"
-        @click="completeEvaluate"
-      >
-      OCRを終了する
-      </v-btn>
+      <CompleteEvaluateButton
+        @complete-evaluate="completeEvaluate"
+      />
     </v-card>
   </div>
 </template>
 
 <script>
 import SnackBar from '@/components/elements/SnackBar'
+import CompleteEvaluateButton from '@/components/elements/CompleteEvaluateButton'
 
 export default {
   name: 'EvaluatePage',
   components: {
-    SnackBar
+    SnackBar,
+    CompleteEvaluateButton
   },
   async asyncData({ params, $axios, $config }) {
     const response = await $axios.$get($config.API_BASE_URL + '/api/target/',
