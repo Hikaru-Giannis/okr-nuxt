@@ -69,13 +69,9 @@
           </tbody>
         </template>
       </v-simple-table>
-      <v-btn
-        class="mx-5 my-5"
-        color="primary"
-        @click="scoreIndicators"
-      >
-      OCRを続ける
-      </v-btn>
+      <ScoreIndicatorsButton
+        @score-indicators="scoreIndicators"
+      />
       <CompleteEvaluateButton
         @complete-evaluate="completeEvaluate"
       />
@@ -85,12 +81,14 @@
 
 <script>
 import SnackBar from '@/components/elements/SnackBar'
+import ScoreIndicatorsButton from '@/components/elements/ScoreIndicatorsButton'
 import CompleteEvaluateButton from '@/components/elements/CompleteEvaluateButton'
 
 export default {
   name: 'EvaluatePage',
   components: {
     SnackBar,
+    ScoreIndicatorsButton,
     CompleteEvaluateButton
   },
   async asyncData({ params, $axios, $config }) {
