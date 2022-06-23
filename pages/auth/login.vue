@@ -8,19 +8,13 @@
     <h2>ログイン画面</h2>
     <form>
       <EmailInput
+        ref="email"
         v-model="email"
       />
-      <v-text-field
+      <PasswordInput
+        ref="password"
         v-model="password"
-        :error-messages="passwordErrors"
-        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-        :type="show ? 'text' : 'password'"
-        label="パスワード"
-        required
-        counter
-        @click:append="show = !show"
-        @blur="$v.password.$touch()"
-      ></v-text-field>
+      />
       <v-btn
         class="mr-4 mt-4"
         @click="login"
@@ -39,46 +33,28 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import SnackBar from '@/components/elements/SnackBar'
 import EmailInput from '@/components/elements/EmailInput'
+import PasswordInput from '@/components/elements/PasswordInput'
 
 export default {
   name: 'Login',
   components: {
     SnackBar,
-    EmailInput
+    EmailInput,
+    PasswordInput
   },
-  mixins: [validationMixin],
-
-  validations: {
-    password: { required, minLength: minLength(8), maxLength: maxLength(20)}
-  },
-
   data: () => ({
     email: '',
     password: '',
-    show: false,
     isError: false,
     errorMessage: ''
   }),
-
-  computed: {
-    passwordErrors () {
-      const errors = []
-      if (!this.$v.password.$dirty) return errors
-      !this.$v.password.maxLength && errors.push('ユーザー名は最大20文字以内で入力してください。')
-      !this.$v.password.maxLength && errors.push('ユーザー名は最低8文字以内で入力してください。')
-      !this.$v.password.required && errors.push('パスワードは入力必須です。')
-      return errors
-    }
-  },
-
   methods: {
     async login () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.$refs.email.$v.$touch()
+      this.$refs.password.$v.$touch()
+      if (this.$refs.email.$v.$invalid || this.$refs.password.$v.$invalid) {
         return false
       }
 
