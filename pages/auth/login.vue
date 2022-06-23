@@ -7,13 +7,9 @@
     />
     <h2>ログイン画面</h2>
     <form>
-      <v-text-field
+      <EmailInput
         v-model="email"
-        :error-messages="emailErrors"
-        label="メールアドレス"
-        required
-        @blur="$v.email.$touch()"
-      ></v-text-field>
+      />
       <v-text-field
         v-model="password"
         :error-messages="passwordErrors"
@@ -44,18 +40,19 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import SnackBar from '@/components/elements/SnackBar'
+import EmailInput from '@/components/elements/EmailInput'
 
 export default {
   name: 'Login',
   components: {
-    SnackBar
+    SnackBar,
+    EmailInput
   },
   mixins: [validationMixin],
 
   validations: {
-    email: { required, email },
     password: { required, minLength: minLength(8), maxLength: maxLength(20)}
   },
 
@@ -68,13 +65,6 @@ export default {
   }),
 
   computed: {
-    emailErrors () {
-      const errors = []
-      if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email && errors.push('無効なメールアドレスです。')
-      !this.$v.email.required && errors.push('メールアドレスは入力必須です。')
-      return errors
-    },
     passwordErrors () {
       const errors = []
       if (!this.$v.password.$dirty) return errors
